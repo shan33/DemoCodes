@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>XXXX</title>
+        <style type="text/css">
+            .box {
+                width: 200px;
+                height: 200px;
+                background: #AAA;
+                margin-bottom: 30px;
+            }
+
+            .box-son {
+                width: 100px;
+                height: 100px;
+                background: #ccc;
+            }
+
+            .father-relative {
+                position: relative;
+
+            }
+
+            /* block 类型 absolute居中 */
+            .son-absolute {
+                position: absolute;
+                margin: auto;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+            }
+
+            /* 行内元素 */
+            .son-translate {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            /* flex 居中 */
+            .father-flex {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="father-relative box">
+            <div class="son-absolute box-son">block居中</div> 
+        </div>
+
+        <div class="father-relative box">
+            <span class="son-translate box-son">inline居中</span>
+        </div>
+
+        <div class="father-flex box">
+            <span class="box-son">inline居中</span>
+        </div>
+    </body>
+</html>
