@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>CORS 测试</title>
+        <style>
+            * {
+                background: #ccc;
+                color: blueviolet;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            let script = document.createElement('script');
+            script.setAttribute('src', 'http://localhost:333?callback=callback');
+            document.body.appendChild(script);
+            function callback(title) {
+                console.log(title);
+            }
+        </script>
+    </body>
+</html>
