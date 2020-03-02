@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>CORS 测试</title>
+        <style>
+            * {
+                background: #ccc;
+                color: blueviolet;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            fetch('http://localhost:333/')
+            .then(res => res.json())
+            .then(res => {
+                document.body.innerHTML = res.title;
+            })
+        </script>
+    </body>
+</html>
