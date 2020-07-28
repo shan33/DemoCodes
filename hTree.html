@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .hDiv {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hTree * {
+            box-sizing: border-box;
+        }
+
+        .hTree .node {
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .hTree .node .text {
+            width: 100px;
+            padding: 10px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            border: solid 1px #ccc;
+        }
+
+        .hTree .node .text:hover {
+            background: #f2f2f2;
+        }
+
+        .hTree li {
+            position: relative;
+            list-style-type: none;
+        }
+
+        .hTree .node .ul {
+            position: relative;
+            display: flex;
+            justify-content: space-around;
+            margin-top: 80px;
+            min-width: 200px;
+        }
+
+        .hTree .node .ul .li::before {
+            position: absolute;
+            top: -40px;
+            left: 49.5%;
+            content: '';
+            height: 40px;
+            width: 0;
+            border: solid 1px #ccc;
+        }
+
+        .hTree .node .ul::before {
+            position: absolute;
+            top: -80px;
+            content: '';
+            height: 40px;
+            width: 0;
+            border: solid 1px #ccc;
+        }
+
+        /* 根节点下横线的宽度由末节点宽度确定，由于需要单独计算，此处直接修改横线为全部宽度 */
+        .hTree .node .ul:first-child:after {
+            width: calc(100%);
+        }
+
+        .hTree .node .ul::after {
+            position: absolute;
+            content: '';
+            width: calc(100% - 120px);
+            height: 0;
+            top: -40px;
+            border: solid 1px #ccc;
+        }
+
+        /* 当只有一个子节点时候，父节点直接一条直线连接 */
+        .hTree .node .ul.single::after {
+            content: '';
+            width: 0;
+            height: 0;
+        }
+
+        .hTree .node .ul.single::before {
+            content: '';
+            height: 80px;
+        }
+
+        .hTree .node .ul.single>.li::before {
+            height: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    const body = document.body;
+    var $hDiv = document.createElement('div');
+    $hDiv.className = 'hDiv';
+    var $hTree = document.createElement('div');
+    $hTree.className = 'hTree';
+    $hDiv.append($hTree);
+    body.append($hDiv);
+
+    function appendNodeChild($parent, item) {
+        let $node = document.createElement('div');
+        $node.className = 'node';
+        let $text = document.createElement('div');
+        $text.innerHTML = item.value;
+        $text.className = 'text';
+        $node.append($text);
+        if (item.children && item.children.length > 0) {
+            let $ul = document.createElement('ul');
+            $ul.className = 'ul';
+            if (item.children.length === 1) {
+                $ul.className = 'ul single'
+            }
+            item.children.forEach(child => appendUlChild($ul, child));
+            $node.append($ul);
+        }
+        $parent.append($node);
+    }
+
+    function appendUlChild($parent, item) {
+        let $li = document.createElement('li');
+        $li.className = 'li';
+        $parent.append($li);
+        appendNodeChild($li, item);
+    }
+</script>
+<script>
+    let data = {
+        value: 'a',
+        children: [{
+            value: 'a-a',
+            children: [{
+                value: 'a-a-a'
+            }, {
+                value: 'a-a-b'
+            }]
+        }, {
+            value: 'a-b',
+            children: [{
+                value: 'a-b-a',
+                children: [{ value: 'a-b-a-a' }]
+            }]
+        }, {
+            value: 'a-c',
+            children: [{
+                value: 'a-c-a',
+                children: [{
+                    value: 'a-c-a-a'
+                }, {
+                    value: 'a-c-a-b'
+                }]
+            }]
+        }]
+    }
+    appendNodeChild($hTree, data);
+</script>
+
+</html>
