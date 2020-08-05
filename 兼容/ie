@@ -1,0 +1,5 @@
+1. IE以及更早的版本不支持 DocumentType（注释节点）.  
+    即 documnent.doctype = null;
+   IE9会documentType赋予正确的对象，但仍然不支持DocumentType类型
+   
+2. 
