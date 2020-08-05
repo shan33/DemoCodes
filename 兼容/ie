@@ -2,4 +2,17 @@
     即 documnent.doctype = null;
    IE9会documentType赋予正确的对象，但仍然不支持DocumentType类型
    
-2. 
+2. IE 将script和style视为特殊的节点。不允许访问其子节点。
+3. IE8-不支持selectorAPI
+4. 元素间的空格，IE9之前不会返回文本节点，其他所有浏览器都会返回文本节点
+5. 跨浏览器遍历元素所有子元素
+
+// IE9+
+var i, len, child = element.firstElementChild;
+// lastElementChild, nextElementSibling 保证了element是一个元素类型的节点
+while (child != element.lastElementChild) {
+        processChild(child);
+    child = child.nextElementSibling;
+}
+
+
