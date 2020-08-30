@@ -1,0 +1,98 @@
+<html>
+
+<head>
+  <title>drop test</title>
+  <style></style>
+</head>
+
+<body>
+  <div style="width: 100px;height: 100px;background:red;" id="src" class="draggable"></div>
+  <script>
+
+    const src = document.getElementById('src');
+    drag();
+    var drag = function () {
+      var dragOperator = new MyEventTarget(),
+        dragTarget = null,
+        diffX = 0,
+        diffY = 0;
+
+
+      function handleEvent(event) {
+        // 获取事件和目标
+        let target = event.target;
+
+        // 确认事件类型
+        switch (event.type) {
+          case 'mounsedown':
+            if (target.className.includes('draggable')) {
+              dragTarget = target;
+              diffX = event.clientX - target.offsetLeft;
+              diffY = event.clientY - target.offsetTop;
+              dragOperator.run({ type: 'dragstart', target: dragTarget, x: event.clientX, y: event.clientY });
+            }
+            break;
+          case 'mousemove':
+            if (dragTarget !== null) {
+              // 指定位置
+              dragTarget.style.left = (event.clientX - diffX) + 'px';
+              dragTarget.style.top = (event.clientY - diffY) + 'px';
+              dragOperator.run({ type: 'drag', target: dragTarget, x: event.clientX, y: event.clientY });
+            }
+            break;
+          case 'mounseup':
+            dragOperator.run({ type: 'dragend', target: dragTarget, x: event.clientX, y: event.clientY });
+            dragTarget = null;
+            break;
+        }
+      }
+
+      dragOperator.enable = function () {
+        document.addEventListener('mounsedown', handleEvent);
+        document.addEventListener('mounsemove', handleEvent);
+        document.addEventListener('mouseup', handleEvent);
+      };
+
+      dragOperator.disable = function () {
+        document.removeEventListener('mousedown', handleEvent);
+        document.removeEventListener('mousemove', handleEvent);
+        document.removeEventListener('mouseup', handleEvent);
+      }
+
+    }
+
+
+    /* 自定义事件 */
+    function MyEventTarget() {
+      this.handlers = {};
+    }
+
+    MyEventTarget.prototype = {
+      constructor: MyEventTarget,
+      addHandler: function (type, handler) {
+        if (typeof this.handlers[type] === 'undefined') this.handlers = [];
+        this.handlers[type].push(handler);
+      },
+      run: function (event) {
+        if (!event.target) event.target = this;
+        if (this.handlers[event.type] instanceof Array) {
+          var handlers = this.handlers[event.type];
+          handlers.forEach(item => item(event));
+        }
+      },
+      removeHandler: function (type, handler) {
+        let handlers = this.handlers[type];
+        if (handlers instanceof Array) {
+          for (let i = 0; i < handlers; i++) {
+            if (handlers[i] === handler) {
+              handlers.splice(i, 1);
+            }
+            break;
+          }
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
